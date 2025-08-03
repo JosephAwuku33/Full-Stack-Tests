@@ -1,120 +1,326 @@
-# Ideation Axis - 24-Hour Full-Stack Developer Challenge
 
-## Overview
-Welcome to the Ideation Axis Full-Stack Developer Assessment. You have **exactly 24 hours** from the time you receive email to access this repository to complete ONE of the two challenges below. This test evaluates your ability to build functional web applications efficiently.
+# Farm Direct
 
-## Challenge Selection
-**Choose ONE of the following challenges to complete:**
-
-### Option A: AgriTech Marketplace - "FarmDirect"
-### Option B: Venture Capital Platform - "DealTracker"
-
-## What We're Looking For
-- **Completion**: Can you deliver working core features?
-- **Code Quality**: Is your code clean and maintainable?
-- **Problem Solving**: How do you handle requirements and bugs?
-- **User Focus**: Do you think about the end user experience?
-- **Time Management**: Can you prioritize and deliver on time?
-
-## Sample Test Data
-We recommend creating seed data for testing:
-- **AgriTech**: 2-3 farmer accounts, 5-10 products across categories
-- **VC Platform**: 2-3 VC accounts, 1-2 entrepreneur accounts, 5-8 sample deals
-
-## Support
-- Use any online resources, documentation
-- No collaboration with others
-- Focus on working software over perfect code
-
----
-
-## Technical Requirements
-
-### Mandatory Stack
-- **Frontend**: React, Vue.js, or Angular
-- **Backend**: Node.js, Python (Django/Flask/FastApi)
-- **Database**: MySQL, PostgreSQL, or MongoDB
-- **Authentication**: JWT or session-based
-
-### Expected Features
-- Responsive design
-- Form validation
-- Error handling
-- Basic security measures
-- Clean, intuitive UI
-
-## Evaluation Criteria
-
-### Functionality (40%)
-- All core requirements working
-- Proper user flows
-- Bug-free basic operations
-- Data persistence
-
-### Code Quality (25%)
-- Clean, readable code
-- Proper file organization
-- Basic error handling
-- Consistent coding style
-
-### User Experience (20%)
-- Intuitive interface design
-- Responsive layout
-- Smooth user interactions
-- Professional appearance
-
-### Technical Implementation (15%)
-- Proper API design
-- Database structure
-- Security considerations
-- Performance basics
-
-## Submission Requirements
-
-### 1. Code Repository
-- Fork this repository
-- Commit your progress regularly
-- Include a detailed README with:
-  - Setup instructions
-  - Technology choices
-  - Features implemented
-
-### 2. Live Demo (Strongly Recommended)
-- Deploy to Heroku, Vercel, Netlify, or similar
-- Provide working URL with test accounts
-- **Hosting will significantly improve your evaluation**
-
-### 3. Video Demo (Alternative)
-- screen recording
-- Show key features working
-  
-### 4. Documentation
-- Clear setup instructions
-- API endpoints list
-- Test user credentials
-- Known limitations
-
-## Getting Started
-
-### Time Management Suggestions
-- **Hour 24**: Final submission
-
-### Priority Order
-1. User authentication and basic UI
-2. Core data models and CRUD operations
-3. Main user workflows
-4. Basic styling and responsiveness
-5. Testing and deployment
-6. Bonus features (if time permits)
-
-## Submission Timeline
-- **Start**: Read and complete instructions to the project choice. 
-- **Duration**: Exactly 24 hours
-- **End**: Push final code to your own repo, and send any deliverables to https://forms.office.com/r/WqxJ7r9FDW
-- **No extensions or late submissions accepted**
+A marketplace where farmers can list their products and customers can browse and purchase fresh produce directly from farms.
 
 
 
-**Good luck! Show us what you can build in 24 hours.**
+## Tech Stack
 
-*Remember: A working application with core features is better than a perfect incomplete solution.*
+- Node.js
+- Express
+- Typescript
+- MongoDB
+
+
+
+## Features
+
+#### 1. User Authentication (Required)
+- **Farmers**: Can register, login, manage their profile
+- **Customers**: Can register, login, browse and purchase
+- Simple email/password authentication
+
+#### 2. Product Management (Required)
+- Farmers can add products with:
+  - Product name, description, price
+  - Category (vegetables, fruits, grains, dairy)
+  - Quantity available
+  - Single image upload
+  - Harvest/expiry date
+
+#### 3. Product Browsing (Required)
+- Customers can:
+  - View all products in a grid/list
+  - Search products by name
+  - Filter by category and price range
+  - View product details
+
+#### 4. Shopping Cart & Orders (Required)
+- Add/remove items from cart
+- Simple checkout process
+- Order confirmation with basic details
+- Order history for customers
+- Order management for farmers (view incoming orders)
+
+#### 5. Basic Dashboard (Required)
+- **Farmer Dashboard**: List their products, recent orders
+- **Customer Dashboard**: Order history, account details
+
+
+
+
+
+## API Reference
+
+#### Register
+
+```http
+  POST /api/register
+```
+
+| Body Params | Type     | Description                                 |
+| :---------- | :------- | :------------------------------------------ |
+| `name`      | `string` | **Required**. Full name of the user         |
+| `email`     | `string` | **Required**. Email address of the user     |
+| `password`  | `string` | **Required**. Password for account          |
+| `role`      | `string` | **Required**. Either `farmer` or `customer` |
+
+
+#### Login
+
+```http
+  POST /api/auth/login
+```
+
+| Body Params | Type     | Description                             |
+| :---------- | :------- | :-------------------------------------- |
+| `email`     | `string` | **Required**. Email address of the user |
+| `password`  | `string` | **Required**. Password for account      |
+
+
+### Public Products
+#### List Products
+
+```http
+  GET /api/products
+```
+
+| Query Params | Type     | Description                            |
+| :----------- | :------- | :------------------------------------- |
+| `search`     | `string` | Search keyword (optional)              |
+| `category`   | `string` | Filter by category (optional)          |
+| `minPrice`   | `number` | Minimum price filter (optional)        |
+| `maxPrice`   | `number` | Maximum price filter (optional)        |
+| `page`       | `number` | Page number (optional, default: 1)     |
+| `limit`      | `number` | Items per page (optional, default: 12) |
+
+#### Get Product Details
+
+```http
+  GET /api/products/:id
+```
+| Path Params | Type     | Description              |
+| :---------- | :------- | :----------------------- |
+| `id`        | `string` | **Required**. Product ID |
+
+
+
+### Farmer Endpoints ( Requires Bearer Token & Role = farmer )
+#### Farmer Dashboard
+```http
+  GET /api/farmer/dashboard
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+
+#### Create Product
+```http
+  POST /api/farmer/products
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+
+| Body Params         | Type     | Description                                                    |
+| :------------------ | :------- | :------------------------------------------------------------- |
+| `name`              | `string` | **Required**. Product name                                     |
+| `description`       | `string` | Product description                                            |
+| `category`          | `string` | **Required**. One of `vegetables`, `fruits`, `grains`, `dairy` |
+| `price`             | `number` | **Required**. Price per unit                                   |
+| `quantityAvailable` | `number` | **Required**. Stock quantity                                   |
+| `imageUrl`          | `string` | **Required**. Product image URL                                |
+| `harvestDate`       | `string` | **Required**. Harvest date (ISO format)                        |
+| `expiryDate`        | `string` | **Required**. Expiry date (ISO format)                         |
+
+
+
+#### Update Product
+```http
+  POST /api/farmer/products/:id
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+| Path Params | Type     | Description              |
+| :---------- | :------- | :----------------------- |
+| `id`        | `string` | **Required**. Product ID |
+
+| Body Params         | Type   | Description            |
+| :------------------ | :----- | :--------------------- |
+| (any product field) | varies | Partial update allowed |
+
+
+#### Delete Product
+```http
+  DELETE /api/farmer/products/:id
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+| Path Params | Type     | Description              |
+| :---------- | :------- | :----------------------- |
+| `id`        | `string` | **Required**. Product ID |
+
+
+### Customer Endpoints (Requires Bearer Token & Role = customer)
+#### Customer Dashboard
+```http 
+    GET /api/customer/dashboard
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+
+#### Get cart 
+```http 
+    GET /api/customer/cart
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+
+#### Add to cart
+```http 
+    POST /api/customer/cart/items
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+| Body Params | Type     | Description                   |
+| :---------- | :------- | :---------------------------- |
+| `productId` | `string` | **Required**. Product ID      |
+| `quantity`  | `number` | **Required**. Quantity to add |
+
+
+
+#### Remove from Cart 
+```http 
+DELETE /api/customer/cart/items/:productId
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+| Path Params | Type     | Description              |
+| :---------- | :------- | :----------------------- |
+| `productId` | `string` | **Required**. Product ID |
+
+
+
+#### Checkout
+```http 
+POST /api/customer/checkout
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+| Body Params       | Type     | Description                                                            |
+| :---------------- | :------- | :--------------------------------------------------------------------- |
+| `shippingAddress` | `string` | **Required**. Shipping address                                         |
+| `paymentMethod`   | `string` | **Required**. One of `credit_card`, `mobile_money`, `cash_on_delivery` |
+
+
+#### Customer Orders
+```http 
+GET /api/customer/orders
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+
+#### Get Single Order
+``` http 
+GET /api/customer/orders/:id
+```
+| Header (Bearer Auth) | Type     | Description                |
+| :------------------- | :------- | :------------------------- |
+| `token`              | `string` | **Required**. Access token |
+
+| Path Params | Type     | Description            |
+| :---------- | :------- | :--------------------- |
+| `id`        | `string` | **Required**. Order ID |
+
+
+### Shared Order Access ( Customer or Farmer)
+
+#### Get Order By ID
+``` http 
+GET /api/orders/:id
+```
+| Header (Bearer Auth) | Type     | Description                                                      |
+| :------------------- | :------- | :--------------------------------------------------------------- |
+| `token`              | `string` | **Required**. Access token (must own the order or be the farmer) |
+
+| Path Params | Type     | Description            |
+| :---------- | :------- | :--------------------- |
+| `id`        | `string` | **Required**. Order ID |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://link-to-project
+```
+
+Go to the project directory
+
+```bash
+  cd backend / cd frontend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
+```
+
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm test
+```
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`SECRET_KEY`
+`TOKEN_EXPIRATION`
+`MONGODB_URI`
+`PORT`
+

@@ -1,0 +1,51 @@
+# Node.js
+# ========================
+# node_modules
+node_modules
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Runtime data
+*.tgz
+.yarn/
+.npm/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# TypeScript compiled output
+# ========================
+dist/
+tsbuildinfo 
+.tsbuildinfo
+
+
+
+# Editor directories and files
+# ========================
+.idea/             # IntelliJ IDEA
+.vscode/           # VSCode
+*.iml              # IntelliJ IDEA module files
+*.suo              # Visual Studio Solution User Options
+*.user             # Visual Studio project user options
+
+# Operating System Files
+# ========================
+.DS_Store          # macOS
+Thumbs.db          # Windows
+ehthumbs.db        # Windows
+Desktop.ini        # Windows
+
+# Misc
+# ========================
+*.log
+.DS_Store
