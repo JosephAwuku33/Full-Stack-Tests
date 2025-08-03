@@ -8,7 +8,7 @@ import { errorHandler } from "./middleware/errorHandler";
 import router from "./routes";
 import { config } from "./config/config";
 
-dotenv.config();
+dotenv.config({ path: "./env" });
 
 const app = express();
 const port = config.PORT;

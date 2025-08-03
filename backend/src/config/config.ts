@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "../../.env" });
+import path from "path";
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 export const config = {
   SECRET_KEY: process.env.SECRET_KEY || "excellencyinprogramming",
